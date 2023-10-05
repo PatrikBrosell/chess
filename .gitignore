@@ -1,0 +1,6 @@
+*.out
+*.exe
+chess.html
+chess.js
+chess.wasm
+*.swp
