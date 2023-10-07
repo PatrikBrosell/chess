@@ -1,0 +1,48 @@
+name: Deploy game as wasm to GH Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["master"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Setup emscripten
+        uses: mymindstorm/setup-emsdk@v12
+
+      - name: Build raylib
+        run: cd raylib && ./build.sh
+
+      - name: Build game
+        run: mkdir game && emcc -o game/index.html -Os -Wall -Wextra ./raylib/build/web/lib/libraylib.a -I./raylib/build/web/include/ game.c -L./raylib/build/web/lib/ --shell-file minshell.html -s USE_GLFW=3 -DPLATFORM_WEB
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: './game'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
