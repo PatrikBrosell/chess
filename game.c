@@ -10,6 +10,7 @@ static void InitGame(void); // initialize game state
 static void DrawBoard(void);
 static void DrawGame(void);
 static void DrawTextCenterRect(const char*, Rectangle, Color);
+static void DrawPieces(void);
 
 typedef enum pieces {
 	EMPTY,
@@ -100,6 +101,37 @@ void MainLoop(void)
 void DrawGame(void)
 {
 	DrawBoard();
+	DrawPieces();
+}
+
+void DrawPieces(void)
+{
+	for(int x = 0; x < 8; ++x) {
+		for(int y = 0; y < 8; ++y) {
+			switch(g_game[x][y].piece) {
+				case KING:
+					DrawTextCenterRect("Kng", g_board[x+1][y+1], RED);
+					break;
+				case QUEEN:
+					DrawTextCenterRect("Qu", g_board[x+1][y+1], RED);
+					break;
+				case ROOK:
+					DrawTextCenterRect("R", g_board[x+1][y+1], RED);
+					break;
+				case BISHOP:
+					DrawTextCenterRect("B", g_board[x+1][y+1], RED);
+					break;
+				case KNIGHT:
+					DrawTextCenterRect("Kn", g_board[x+1][y+1], RED);
+					break;
+				case PAWN:
+					DrawTextCenterRect("P", g_board[x+1][y+1], RED);
+					break;
+				case EMPTY:
+					continue;
+			}
+		}
+	}
 }
 
 void DrawBoard(void)
