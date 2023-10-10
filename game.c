@@ -9,6 +9,7 @@ static void MainLoop(void);
 static void InitGame(void); // initialize game state
 static void DrawBoard(void);
 static void DrawGame(void);
+static void DrawTextCenterRect(const char*, Rectangle, Color);
 
 typedef enum pieces {
 	EMPTY,
@@ -130,4 +131,26 @@ void DrawBoard(void)
 		}
 		black ^= 1;
 	}
+}
+
+void DrawTextCenterRect(const char* text, Rectangle rect, Color color)
+{
+	Vector2 xy;
+	int x1, x2;
+	int y1, y2;
+	x1 = rect.x;
+	y1 = rect.y;
+	x2 = rect.x;
+	y2 = rect.y;
+	x1 += rect.width/2;
+	y1 += rect.height/2;
+	x2 += rect.width/2;
+	y2 += rect.height/2;
+	xy = MeasureTextEx(GetFontDefault(), text, 40, 0);
+	x1 -= xy.x/2;
+	y1 -= xy.y/2;
+	x2 -= xy.x/2;
+	y2 -= xy.y/2;
+	DrawText(text, x1, y1, 40, color);
+	DrawText(text, x2, y2, 40, color);
 }
