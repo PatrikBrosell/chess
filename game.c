@@ -7,6 +7,7 @@
 
 static void MainLoop(void);
 static void InitGame(void); // initialize game state
+static void DrawBoard(void);
 static void DrawGame(void);
 
 typedef enum pieces {
@@ -96,6 +97,11 @@ void MainLoop(void)
 }
 
 void DrawGame(void)
+{
+	DrawBoard();
+}
+
+void DrawBoard(void)
 {
 	ClearBackground(GetColor(0x151515FF));
 	for(int x = 0, black = 0; x < 10; ++x) {
