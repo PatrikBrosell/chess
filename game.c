@@ -131,6 +131,82 @@ void DrawBoard(void)
 		}
 		black ^= 1;
 	}
+
+	//1..8
+	for(int i = 0; i < 10; ++i) {
+		switch(i) {
+			case 1:
+				DrawTextCenterRect("1", g_board[0][i], SKYBLUE);
+				DrawTextCenterRect("1", g_board[9][i], SKYBLUE);
+				break;
+			case 2:
+				DrawTextCenterRect("2", g_board[0][i], SKYBLUE);
+				DrawTextCenterRect("2", g_board[9][i], SKYBLUE);
+				break;
+			case 3:
+				DrawTextCenterRect("3", g_board[0][i], SKYBLUE);
+				DrawTextCenterRect("3", g_board[9][i], SKYBLUE);
+				break;
+			case 4:
+				DrawTextCenterRect("4", g_board[0][i], SKYBLUE);
+				DrawTextCenterRect("4", g_board[9][i], SKYBLUE);
+				break;
+			case 5:
+				DrawTextCenterRect("5", g_board[0][i], SKYBLUE);
+				DrawTextCenterRect("5", g_board[9][i], SKYBLUE);
+				break;
+			case 6:
+				DrawTextCenterRect("6", g_board[0][i], SKYBLUE);
+				DrawTextCenterRect("6", g_board[9][i], SKYBLUE);
+				break;
+			case 7:
+				DrawTextCenterRect("7", g_board[0][i], SKYBLUE);
+				DrawTextCenterRect("7", g_board[9][i], SKYBLUE);
+				break;
+			case 8:
+				DrawTextCenterRect("8", g_board[0][i], SKYBLUE);
+				DrawTextCenterRect("8", g_board[9][i], SKYBLUE);
+				break;
+		}
+	}
+
+	//A..H
+	for(int i = 0; i < 10; ++i) {
+		switch(i) {
+			case 1:
+				DrawTextCenterRect("A", g_board[i][0], SKYBLUE);
+				DrawTextCenterRect("A", g_board[i][9], SKYBLUE);
+				break;
+			case 2:
+				DrawTextCenterRect("B", g_board[i][0], SKYBLUE);
+				DrawTextCenterRect("B", g_board[i][9], SKYBLUE);
+				break;
+			case 3:
+				DrawTextCenterRect("C", g_board[i][0], SKYBLUE);
+				DrawTextCenterRect("C", g_board[i][9], SKYBLUE);
+				break;
+			case 4:
+				DrawTextCenterRect("D", g_board[i][0], SKYBLUE);
+				DrawTextCenterRect("D", g_board[i][9], SKYBLUE);
+				break;
+			case 5:
+				DrawTextCenterRect("E", g_board[i][0], SKYBLUE);
+				DrawTextCenterRect("E", g_board[i][9], SKYBLUE);
+				break;
+			case 6:
+				DrawTextCenterRect("F", g_board[i][0], SKYBLUE);
+				DrawTextCenterRect("F", g_board[i][9], SKYBLUE);
+				break;
+			case 7:
+				DrawTextCenterRect("G", g_board[i][0], SKYBLUE);
+				DrawTextCenterRect("G", g_board[i][9], SKYBLUE);
+				break;
+			case 8:
+				DrawTextCenterRect("H", g_board[i][0], SKYBLUE);
+				DrawTextCenterRect("H", g_board[i][9], SKYBLUE);
+				break;
+		}
+	}
 }
 
 void DrawTextCenterRect(const char* text, Rectangle rect, Color color)
