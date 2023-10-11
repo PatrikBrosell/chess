@@ -30,10 +30,10 @@ jobs:
         uses: mymindstorm/setup-emsdk@v12
 
       - name: Build raylib
-        run: cd raylib && sed -i 's/#define SUPPORT_SCREEN_CAPTURE/\/\/#define SUPPORT_SCREEN_CAPTURE/' raylib/src/config.h && sed -i 's/#define SUPPORT_GIF_RECORDING/\/\/#define SUPPORT_GIF_RECORDIN/' raylib/src/config.h && ./build.sh
+        run: cd extern && sed -i 's/#define SUPPORT_SCREEN_CAPTURE/\/\/#define SUPPORT_SCREEN_CAPTURE/' raylib/src/config.h && sed -i 's/#define SUPPORT_GIF_RECORDING/\/\/#define SUPPORT_GIF_RECORDIN/' raylib/src/config.h && ./build.sh
 
       - name: Build game
-        run: mkdir game && emcc -o game/index.html -Os -Wall -Wextra ./raylib/build/web/lib/libraylib.a -I./raylib/build/web/include/ game.c -L./raylib/build/web/lib/ --shell-file minshell.html -s USE_GLFW=3 -DPLATFORM_WEB
+        run: mkdir game && emcc -o game/index.html -Os -Wall -Wextra ./extern/build/web/lib/libraylib.a -I./extern/build/web/include/ game.c -L./extern/build/web/lib/ --shell-file minshell.html -s USE_GLFW=3 -DPLATFORM_WEB
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
