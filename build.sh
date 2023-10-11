@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -ex
 
 
 gcc -Wall -Wextra -I./extern/build/linux/include/ game.c -L./extern/build/linux/lib/ -l:libraylib.a -lm -ldl -lpthread
