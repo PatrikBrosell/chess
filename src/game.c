@@ -29,13 +29,13 @@ typedef struct Square {
 	int color;
 } Square;
 
-#define SQUARE_SIZE 100
+int g_square_size = 100;
 
 Rectangle g_board[10][10] = {0};
 Square g_game[8][8] = {0};	// Game state
 
-int g_screenWidth = 950;
-int g_screenHeight = 950;
+int g_screenWidth = 800;
+int g_screenHeight = 800;
 
 int main(void)
 {
@@ -93,6 +93,15 @@ void InitGame(void)
 
 void MainLoop(void)
 {
+	int w = GetScreenWidth();
+	int h = GetScreenHeight();
+
+	int win_size = w < h ? w : h;
+
+	// Board is 8 + 0.5 + 0.5 = 9 squares wide
+	g_square_size = win_size / 9;
+
+
 	BeginDrawing();
 	DrawGame();
 	EndDrawing();
@@ -140,19 +149,19 @@ void DrawBoard(void)
 	for(int x = 0, black = 0; x < 10; ++x) {
 		for(int y = 0; y < 10; ++y) {
 			if(x == 0 && y == 0) {
-				g_board[x][y] = (Rectangle) {SQUARE_SIZE/2*x, SQUARE_SIZE/2*y, SQUARE_SIZE/2, SQUARE_SIZE/2};
+				g_board[x][y] = (Rectangle) {g_square_size/2*x, g_square_size/2*y, g_square_size/2, g_square_size/2};
 			} else if(x == 9 && y == 9) {
-				g_board[x][y] = (Rectangle) {SQUARE_SIZE*x-SQUARE_SIZE/2, SQUARE_SIZE*y-SQUARE_SIZE/2, SQUARE_SIZE/2, SQUARE_SIZE/2};
+				g_board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size/2, g_square_size/2};
 			} else if(x == 9) {
-				g_board[x][y] = (Rectangle) {SQUARE_SIZE*x-SQUARE_SIZE/2, SQUARE_SIZE*y-SQUARE_SIZE/2, SQUARE_SIZE/2, SQUARE_SIZE};
+				g_board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size/2, g_square_size};
 			} else if(y == 9) {
-				g_board[x][y] = (Rectangle) {SQUARE_SIZE*x-SQUARE_SIZE/2, SQUARE_SIZE*y-SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE/2};
+				g_board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size, g_square_size/2};
 			} else if(x == 0) {
-				g_board[x][y] = (Rectangle) {SQUARE_SIZE*x, SQUARE_SIZE*y-SQUARE_SIZE/2, SQUARE_SIZE/2, SQUARE_SIZE};
+				g_board[x][y] = (Rectangle) {g_square_size*x, g_square_size*y-g_square_size/2, g_square_size/2, g_square_size};
 			} else if(y == 0) {
-				g_board[x][y] = (Rectangle) {SQUARE_SIZE*x-SQUARE_SIZE/2, SQUARE_SIZE*y, SQUARE_SIZE, SQUARE_SIZE/2};
+				g_board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y, g_square_size, g_square_size/2};
 			} else {
-				g_board[x][y] = (Rectangle) {SQUARE_SIZE*x-SQUARE_SIZE/2, SQUARE_SIZE*y-SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE};
+				g_board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size, g_square_size};
 			}
 			if(black) {
 				DrawRectangleRec(g_board[x][y], BLACK);
