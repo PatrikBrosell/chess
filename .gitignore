@@ -1,6 +1,3 @@
-*.out
-*.exe
-chess.html
-chess.js
-chess.wasm
+bin/
+
 *.swp
