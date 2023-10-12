@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <raylib.h>
 
@@ -29,6 +30,19 @@ typedef struct Square {
 	int color;
 } Square;
 
+typedef struct Piece {
+	PIECE_TYPE type;
+	Rectangle position;
+	int letter;		// Letter
+	int number;		// Number
+} Piece;
+
+typedef struct {
+	Piece* pieces;
+} GameState;
+
+GameState g_gameState = { 0 };
+
 int g_square_size = 100;
 
 Rectangle g_board[10][10] = {0};
@@ -57,38 +71,143 @@ int main(void)
 #endif // PLATFORM_WEB
 
 	CloseWindow();	// Close window and unload OpenGL context
+	free(g_gameState.pieces);
 	return 0;
 }
 
 void InitGame(void)
 {
-	for(int i = 0; i < 8; ++i) {
-		for(int j = 0; j < 8; ++j) {
-			g_game[i][j].x = i;
-			g_game[i][j].y = j;
-			g_game[i][j].piece = EMPTY;
-		}
-	}
-	g_game[0][0].piece = ROOK;
-	g_game[1][0].piece = KNIGHT;
-	g_game[2][0].piece = BISHOP;
-	g_game[3][0].piece = QUEEN;
-	g_game[4][0].piece = KING;
-	g_game[5][0].piece = BISHOP;
-	g_game[6][0].piece = KNIGHT;
-	g_game[7][0].piece = ROOK;
-	for(int i = 0; i < 8; ++i) {
-		g_game[i][1].piece = PAWN;
-		g_game[i][6].piece = PAWN;
-	}
-	g_game[0][7].piece = ROOK;
-	g_game[1][7].piece = KNIGHT;
-	g_game[2][7].piece = BISHOP;
-	g_game[3][7].piece = QUEEN;
-	g_game[4][7].piece = KING;
-	g_game[5][7].piece = BISHOP;
-	g_game[6][7].piece = KNIGHT;
-	g_game[7][7].piece = ROOK;
+	g_gameState.pieces = calloc(32, sizeof(Piece));
+
+	g_gameState.pieces[0].type = ROOK;
+	g_gameState.pieces[0].letter = 'A';
+	g_gameState.pieces[0].number = 1;
+
+	g_gameState.pieces[1].type = KNIGHT;
+	g_gameState.pieces[1].letter = 'B';
+	g_gameState.pieces[1].number = 1;
+
+	g_gameState.pieces[2].type = BISHOP;
+	g_gameState.pieces[2].letter = 'C';
+	g_gameState.pieces[2].number = 1;
+
+	g_gameState.pieces[3].type = QUEEN;
+	g_gameState.pieces[3].letter = 'D';
+	g_gameState.pieces[3].number = 1;
+
+	g_gameState.pieces[4].type = KING;
+	g_gameState.pieces[4].letter = 'E';
+	g_gameState.pieces[4].number = 1;
+
+	g_gameState.pieces[5].type = BISHOP;
+	g_gameState.pieces[5].letter = 'F';
+	g_gameState.pieces[5].number = 1;
+
+	g_gameState.pieces[6].type = KNIGHT;
+	g_gameState.pieces[6].letter = 'G';
+	g_gameState.pieces[6].number = 1;
+
+	g_gameState.pieces[7].type = ROOK;
+	g_gameState.pieces[7].letter = 'H';
+	g_gameState.pieces[7].number = 1;
+
+	g_gameState.pieces[8].type = PAWN;
+	g_gameState.pieces[8].letter = 'A';
+	g_gameState.pieces[8].number = 2;
+
+	g_gameState.pieces[9].type = PAWN;
+	g_gameState.pieces[9].letter = 'B';
+	g_gameState.pieces[9].number = 2;
+
+	g_gameState.pieces[10].type = PAWN;
+	g_gameState.pieces[10].letter = 'C';
+	g_gameState.pieces[10].number = 2;
+
+	g_gameState.pieces[11].type = PAWN;
+	g_gameState.pieces[11].letter = 'D';
+	g_gameState.pieces[11].number = 2;
+
+	g_gameState.pieces[12].type = PAWN;
+	g_gameState.pieces[12].letter = 'E';
+	g_gameState.pieces[12].number = 2;
+
+	g_gameState.pieces[13].type = PAWN;
+	g_gameState.pieces[13].letter = 'F';
+	g_gameState.pieces[13].number = 2;
+
+	g_gameState.pieces[14].type = PAWN;
+	g_gameState.pieces[14].letter = 'G';
+	g_gameState.pieces[14].number = 2;
+
+	g_gameState.pieces[15].type = PAWN;
+	g_gameState.pieces[15].letter = 'H';
+	g_gameState.pieces[15].number = 2;
+
+	// ------------------
+
+	g_gameState.pieces[16].type = ROOK;
+	g_gameState.pieces[16].letter = 'A';
+	g_gameState.pieces[16].number = 8;
+
+	g_gameState.pieces[17].type = KNIGHT;
+	g_gameState.pieces[17].letter = 'B';
+	g_gameState.pieces[17].number = 8;
+
+	g_gameState.pieces[18].type = BISHOP;
+	g_gameState.pieces[18].letter = 'C';
+	g_gameState.pieces[18].number = 8;
+
+	g_gameState.pieces[19].type = QUEEN;
+	g_gameState.pieces[19].letter = 'D';
+	g_gameState.pieces[19].number = 8;
+
+	g_gameState.pieces[20].type = KING;
+	g_gameState.pieces[20].letter = 'E';
+	g_gameState.pieces[20].number = 8;
+
+	g_gameState.pieces[21].type = BISHOP;
+	g_gameState.pieces[21].letter = 'F';
+	g_gameState.pieces[21].number = 8;
+
+	g_gameState.pieces[22].type = KNIGHT;
+	g_gameState.pieces[22].letter = 'G';
+	g_gameState.pieces[22].number = 8;
+
+	g_gameState.pieces[23].type = ROOK;
+	g_gameState.pieces[23].letter = 'H';
+	g_gameState.pieces[23].number = 8;
+
+	g_gameState.pieces[24].type = PAWN;
+	g_gameState.pieces[24].letter = 'A';
+	g_gameState.pieces[24].number = 7;
+
+	g_gameState.pieces[25].type = PAWN;
+	g_gameState.pieces[25].letter = 'B';
+	g_gameState.pieces[25].number = 7;
+
+	g_gameState.pieces[26].type = PAWN;
+	g_gameState.pieces[26].letter = 'C';
+	g_gameState.pieces[26].number = 7;
+
+	g_gameState.pieces[27].type = PAWN;
+	g_gameState.pieces[27].letter = 'D';
+	g_gameState.pieces[27].number = 7;
+
+	g_gameState.pieces[28].type = PAWN;
+	g_gameState.pieces[28].letter = 'E';
+	g_gameState.pieces[28].number = 7;
+
+	g_gameState.pieces[29].type = PAWN;
+	g_gameState.pieces[29].letter = 'F';
+	g_gameState.pieces[29].number = 7;
+
+	g_gameState.pieces[30].type = PAWN;
+	g_gameState.pieces[30].letter = 'G';
+	g_gameState.pieces[30].number = 7;
+
+	g_gameState.pieces[31].type = PAWN;
+	g_gameState.pieces[31].letter = 'H';
+	g_gameState.pieces[31].number = 7;
 }
 
 void MainLoop(void)
@@ -100,6 +219,12 @@ void MainLoop(void)
 
 	// Board is 8 + 0.5 + 0.5 = 9 squares wide
 	g_square_size = win_size / 9;
+
+	for(int i = 0; i < 32; ++i) {
+		int x = g_gameState.pieces[i].letter - 'A';
+		int y = g_gameState.pieces[i].number - 1;
+		g_gameState.pieces[i].position = g_board[x+1][y+1];
+	}
 
 
 	BeginDrawing();
@@ -115,30 +240,29 @@ void DrawGame(void)
 
 void DrawPieces(void)
 {
-	for(int x = 0; x < 8; ++x) {
-		for(int y = 0; y < 8; ++y) {
-			switch(g_game[x][y].piece) {
-				case KING:
-					DrawTextCenterRect("Kng", g_board[x+1][y+1], RED);
-					break;
-				case QUEEN:
-					DrawTextCenterRect("Qu", g_board[x+1][y+1], RED);
-					break;
-				case ROOK:
-					DrawTextCenterRect("R", g_board[x+1][y+1], RED);
-					break;
-				case BISHOP:
-					DrawTextCenterRect("B", g_board[x+1][y+1], RED);
-					break;
-				case KNIGHT:
-					DrawTextCenterRect("Kn", g_board[x+1][y+1], RED);
-					break;
-				case PAWN:
-					DrawTextCenterRect("P", g_board[x+1][y+1], RED);
-					break;
-				case EMPTY:
-					continue;
-			}
+	for(int i = 0; i < 32; ++i) {
+		Piece p = g_gameState.pieces[i];
+		switch(p.type) {
+			case KING:
+				DrawTextCenterRect("Kng", p.position, SKYBLUE);
+				break;
+			case QUEEN:
+				DrawTextCenterRect("Qu", p.position, SKYBLUE);
+				break;
+			case ROOK:
+				DrawTextCenterRect("R", p.position, SKYBLUE);
+				break;
+			case BISHOP:
+				DrawTextCenterRect("B", p.position, SKYBLUE);
+				break;
+			case KNIGHT:
+				DrawTextCenterRect("Kn", p.position, SKYBLUE);
+				break;
+			case PAWN:
+				DrawTextCenterRect("P", p.position, SKYBLUE);
+				break;
+			case EMPTY:
+				continue;
 		}
 	}
 }
