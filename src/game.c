@@ -12,7 +12,7 @@ static void DrawGame(void);
 static void DrawTextCenterRect(const char*, Rectangle, Color);
 static void DrawPieces(void);
 
-typedef enum pieces {
+typedef enum PIECE_TYPE {
 	EMPTY,
 	KING,
 	QUEEN,
@@ -20,7 +20,7 @@ typedef enum pieces {
 	BISHOP,
 	KNIGHT,
 	PAWN,
-} pieces;
+} PIECE_TYPE;
 
 typedef struct Square {
 	int x;
