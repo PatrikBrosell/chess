@@ -35,6 +35,7 @@ typedef struct Piece {
 	Rectangle position;
 	int letter;		// Letter
 	int number;		// Number
+	bool selected;
 } Piece;
 
 typedef struct {
@@ -78,6 +79,10 @@ int main(void)
 void InitGame(void)
 {
 	g_gameState.pieces = calloc(32, sizeof(Piece));
+
+	for(int i = 0; i < 32; ++i) {
+		g_gameState.pieces[i].selected = false;
+	}
 
 	g_gameState.pieces[0].type = ROOK;
 	g_gameState.pieces[0].letter = 'A';
