@@ -30,8 +30,14 @@ typedef struct Square {
 	int color;
 } Square;
 
+typedef enum PIECE_COLOR {
+	PIECE_BLACK,
+	PIECE_WHITE,
+} PIECE_COLOR;
+
 typedef struct Piece {
 	PIECE_TYPE type;
+	PIECE_COLOR color;
 	Rectangle position;
 	int letter;		// Letter
 	int number;		// Number
@@ -87,132 +93,164 @@ void InitGame(void)
 	g_gameState.pieces[0].type = ROOK;
 	g_gameState.pieces[0].letter = 'A';
 	g_gameState.pieces[0].number = 1;
+	g_gameState.pieces[0].color = PIECE_WHITE;
 
 	g_gameState.pieces[1].type = KNIGHT;
 	g_gameState.pieces[1].letter = 'B';
 	g_gameState.pieces[1].number = 1;
+	g_gameState.pieces[1].color = PIECE_WHITE;
 
 	g_gameState.pieces[2].type = BISHOP;
 	g_gameState.pieces[2].letter = 'C';
 	g_gameState.pieces[2].number = 1;
+	g_gameState.pieces[2].color = PIECE_WHITE;
 
 	g_gameState.pieces[3].type = QUEEN;
 	g_gameState.pieces[3].letter = 'D';
 	g_gameState.pieces[3].number = 1;
+	g_gameState.pieces[3].color = PIECE_WHITE;
 
 	g_gameState.pieces[4].type = KING;
 	g_gameState.pieces[4].letter = 'E';
 	g_gameState.pieces[4].number = 1;
+	g_gameState.pieces[4].color = PIECE_WHITE;
 
 	g_gameState.pieces[5].type = BISHOP;
 	g_gameState.pieces[5].letter = 'F';
 	g_gameState.pieces[5].number = 1;
+	g_gameState.pieces[5].color = PIECE_WHITE;
 
 	g_gameState.pieces[6].type = KNIGHT;
 	g_gameState.pieces[6].letter = 'G';
 	g_gameState.pieces[6].number = 1;
+	g_gameState.pieces[6].color = PIECE_WHITE;
 
 	g_gameState.pieces[7].type = ROOK;
 	g_gameState.pieces[7].letter = 'H';
 	g_gameState.pieces[7].number = 1;
+	g_gameState.pieces[7].color = PIECE_WHITE;
 
 	g_gameState.pieces[8].type = PAWN;
 	g_gameState.pieces[8].letter = 'A';
 	g_gameState.pieces[8].number = 2;
+	g_gameState.pieces[8].color = PIECE_WHITE;
 
 	g_gameState.pieces[9].type = PAWN;
 	g_gameState.pieces[9].letter = 'B';
 	g_gameState.pieces[9].number = 2;
+	g_gameState.pieces[9].color = PIECE_WHITE;
 
 	g_gameState.pieces[10].type = PAWN;
 	g_gameState.pieces[10].letter = 'C';
 	g_gameState.pieces[10].number = 2;
+	g_gameState.pieces[10].color = PIECE_WHITE;
 
 	g_gameState.pieces[11].type = PAWN;
 	g_gameState.pieces[11].letter = 'D';
 	g_gameState.pieces[11].number = 2;
+	g_gameState.pieces[11].color = PIECE_WHITE;
 
 	g_gameState.pieces[12].type = PAWN;
 	g_gameState.pieces[12].letter = 'E';
 	g_gameState.pieces[12].number = 2;
+	g_gameState.pieces[12].color = PIECE_WHITE;
 
 	g_gameState.pieces[13].type = PAWN;
 	g_gameState.pieces[13].letter = 'F';
 	g_gameState.pieces[13].number = 2;
+	g_gameState.pieces[13].color = PIECE_WHITE;
 
 	g_gameState.pieces[14].type = PAWN;
 	g_gameState.pieces[14].letter = 'G';
 	g_gameState.pieces[14].number = 2;
+	g_gameState.pieces[14].color = PIECE_WHITE;
 
 	g_gameState.pieces[15].type = PAWN;
 	g_gameState.pieces[15].letter = 'H';
 	g_gameState.pieces[15].number = 2;
+	g_gameState.pieces[15].color = PIECE_WHITE;
 
 	// ------------------
 
 	g_gameState.pieces[16].type = ROOK;
 	g_gameState.pieces[16].letter = 'A';
 	g_gameState.pieces[16].number = 8;
+	g_gameState.pieces[16].color = PIECE_BLACK;
 
 	g_gameState.pieces[17].type = KNIGHT;
 	g_gameState.pieces[17].letter = 'B';
 	g_gameState.pieces[17].number = 8;
+	g_gameState.pieces[17].color = PIECE_BLACK;
 
 	g_gameState.pieces[18].type = BISHOP;
 	g_gameState.pieces[18].letter = 'C';
 	g_gameState.pieces[18].number = 8;
+	g_gameState.pieces[18].color = PIECE_BLACK;
 
 	g_gameState.pieces[19].type = QUEEN;
 	g_gameState.pieces[19].letter = 'D';
 	g_gameState.pieces[19].number = 8;
+	g_gameState.pieces[19].color = PIECE_BLACK;
 
 	g_gameState.pieces[20].type = KING;
 	g_gameState.pieces[20].letter = 'E';
 	g_gameState.pieces[20].number = 8;
+	g_gameState.pieces[20].color = PIECE_BLACK;
 
 	g_gameState.pieces[21].type = BISHOP;
 	g_gameState.pieces[21].letter = 'F';
 	g_gameState.pieces[21].number = 8;
+	g_gameState.pieces[21].color = PIECE_BLACK;
 
 	g_gameState.pieces[22].type = KNIGHT;
 	g_gameState.pieces[22].letter = 'G';
 	g_gameState.pieces[22].number = 8;
+	g_gameState.pieces[22].color = PIECE_BLACK;
 
 	g_gameState.pieces[23].type = ROOK;
 	g_gameState.pieces[23].letter = 'H';
 	g_gameState.pieces[23].number = 8;
+	g_gameState.pieces[23].color = PIECE_BLACK;
 
 	g_gameState.pieces[24].type = PAWN;
 	g_gameState.pieces[24].letter = 'A';
 	g_gameState.pieces[24].number = 7;
+	g_gameState.pieces[24].color = PIECE_BLACK;
 
 	g_gameState.pieces[25].type = PAWN;
 	g_gameState.pieces[25].letter = 'B';
 	g_gameState.pieces[25].number = 7;
+	g_gameState.pieces[25].color = PIECE_BLACK;
 
 	g_gameState.pieces[26].type = PAWN;
 	g_gameState.pieces[26].letter = 'C';
 	g_gameState.pieces[26].number = 7;
+	g_gameState.pieces[26].color = PIECE_BLACK;
 
 	g_gameState.pieces[27].type = PAWN;
 	g_gameState.pieces[27].letter = 'D';
 	g_gameState.pieces[27].number = 7;
+	g_gameState.pieces[27].color = PIECE_BLACK;
 
 	g_gameState.pieces[28].type = PAWN;
 	g_gameState.pieces[28].letter = 'E';
 	g_gameState.pieces[28].number = 7;
+	g_gameState.pieces[28].color = PIECE_BLACK;
 
 	g_gameState.pieces[29].type = PAWN;
 	g_gameState.pieces[29].letter = 'F';
 	g_gameState.pieces[29].number = 7;
+	g_gameState.pieces[29].color = PIECE_BLACK;
 
 	g_gameState.pieces[30].type = PAWN;
 	g_gameState.pieces[30].letter = 'G';
 	g_gameState.pieces[30].number = 7;
+	g_gameState.pieces[30].color = PIECE_BLACK;
 
 	g_gameState.pieces[31].type = PAWN;
 	g_gameState.pieces[31].letter = 'H';
 	g_gameState.pieces[31].number = 7;
+	g_gameState.pieces[31].color = PIECE_BLACK;
 }
 
 void MainLoop(void)
@@ -247,24 +285,30 @@ void DrawPieces(void)
 {
 	for(int i = 0; i < 32; ++i) {
 		Piece p = g_gameState.pieces[i];
+		Color color;
+		if(p.color == PIECE_BLACK) {
+			color = GetColor(0x281900FF);
+		} else if(p.color == PIECE_WHITE) {
+			color = GetColor(0xFFD899FF);
+		}
 		switch(p.type) {
 			case KING:
-				DrawTextCenterRect("Kng", p.position, SKYBLUE);
+				DrawTextCenterRect("Kng", p.position, color);
 				break;
 			case QUEEN:
-				DrawTextCenterRect("Qu", p.position, SKYBLUE);
+				DrawTextCenterRect("Qu", p.position, color);
 				break;
 			case ROOK:
-				DrawTextCenterRect("R", p.position, SKYBLUE);
+				DrawTextCenterRect("R", p.position, color);
 				break;
 			case BISHOP:
-				DrawTextCenterRect("B", p.position, SKYBLUE);
+				DrawTextCenterRect("B", p.position, color);
 				break;
 			case KNIGHT:
-				DrawTextCenterRect("Kn", p.position, SKYBLUE);
+				DrawTextCenterRect("Kn", p.position, color);
 				break;
 			case PAWN:
-				DrawTextCenterRect("P", p.position, SKYBLUE);
+				DrawTextCenterRect("P", p.position, color);
 				break;
 			case EMPTY:
 				continue;
