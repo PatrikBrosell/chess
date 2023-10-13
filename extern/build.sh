@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sed -i 's/#define SUPPORT_SCREEN_CAPTURE/\/\/#define SUPPORT_SCREEN_CAPTURE/' raylib/src/config.h
+sed -i 's/#define SUPPORT_GIF_RECORDING/\/\/#define SUPPORT_GIF_RECORDING/' raylib/src/config.h
+
 mkdir -p build/linux/include
 mkdir -p build/linux/lib
 mkdir -p build/win/include
