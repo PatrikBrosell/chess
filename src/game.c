@@ -53,7 +53,6 @@ GameState g_gameState = { 0 };
 int g_square_size = 100;
 
 Rectangle g_board[10][10] = {0};
-Square g_game[8][8] = {0};	// Game state
 
 int g_screenWidth = 800;
 int g_screenHeight = 800;
