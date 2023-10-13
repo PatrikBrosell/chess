@@ -263,10 +263,47 @@ void MainLoop(void)
 	// Board is 8 + 0.5 + 0.5 = 9 squares wide
 	g_square_size = win_size / 9;
 
+	if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+		for(int i = 0; i < 32; ++i) {
+			Vector2 mouse_pos = GetMousePosition();
+			Piece p = g_gameState.pieces[i];
+			if(CheckCollisionPointRec(mouse_pos, p.position)) {
+				g_gameState.pieces[i].selected = true;
+			}
+		}
+	}
+
+	if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+		Vector2 mp = GetMousePosition();
+		for(int i = 0; i < 32; ++i) {
+			if(g_gameState.pieces[i].selected) {
+				g_gameState.pieces[i].position.x = mp.x;
+				g_gameState.pieces[i].position.y = mp.y;
+			}
+		}
+	} else {
+		Vector2 mp = GetMousePosition();
+		for(int i = 0; i < 10; ++i) {
+			for(int j = 0; j < 10; ++j) {
+				if(CheckCollisionPointRec(mp, g_board[i][j])) {
+					for(int k = 0; k < 32; ++k) {
+						if(g_gameState.pieces[k].selected) {
+							g_gameState.pieces[k].selected = false;
+							g_gameState.pieces[k].letter = 'A' + i-1;
+							g_gameState.pieces[k].number = j;
+						}
+					}
+				}
+			}
+		}
+	}
+
 	for(int i = 0; i < 32; ++i) {
 		int x = g_gameState.pieces[i].letter - 'A';
 		int y = g_gameState.pieces[i].number - 1;
-		g_gameState.pieces[i].position = g_board[x+1][y+1];
+		if(!g_gameState.pieces[i].selected) {
+			g_gameState.pieces[i].position = g_board[x+1][y+1];
+		}
 	}
 
 
