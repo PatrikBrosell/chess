@@ -273,11 +273,11 @@ void MainLoop(void)
 	}
 
 	if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-		Vector2 mp = GetMousePosition();
+		Vector2 mp = GetMouseDelta();
 		for(int i = 0; i < 32; ++i) {
 			if(g_gameState.pieces[i].selected) {
-				g_gameState.pieces[i].position.x = mp.x;
-				g_gameState.pieces[i].position.y = mp.y;
+				g_gameState.pieces[i].position.x += mp.x;
+				g_gameState.pieces[i].position.y += mp.y;
 			}
 		}
 	} else {
