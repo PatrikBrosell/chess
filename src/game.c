@@ -6,13 +6,6 @@
     #include <emscripten/emscripten.h>
 #endif
 
-static void MainLoop(void);
-static void InitGame(void); // initialize game state
-static void DrawBoard(void);
-static void DrawGame(void);
-static void DrawTextCenterRect(const char*, Rectangle, Color);
-static void DrawPieces(void);
-
 typedef enum PIECE_TYPE {
 	EMPTY,
 	KING,
@@ -48,7 +41,17 @@ typedef struct {
 	Piece* pieces;
 } GameState;
 
-GameState g_gameState = { 0 };
+#ifdef PLATFORM_WEB
+static void MainLoop(void*);
+#else
+static void MainLoop(GameState*);
+#endif
+
+static void InitGame(GameState*); // initialize game state
+static void DrawBoard(void);
+static void DrawGame(GameState*);
+static void DrawTextCenterRect(const char*, Rectangle, Color);
+static void DrawPieces(GameState*);
 
 int g_square_size = 100;
 
@@ -59,201 +62,208 @@ int g_screenHeight = 800;
 
 int main(void)
 {
-	InitGame();
+	GameState game_state = {0};
+	InitGame(&game_state);
 
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 
 	InitWindow(g_screenWidth, g_screenHeight, "window title name");
 
 #if defined(PLATFORM_WEB)
-	emscripten_set_main_loop(MainLoop, 0, 1);
+	emscripten_set_main_loop_arg(MainLoop, &game_state, 0, 1);
 #else
 
 	SetTargetFPS(60);
 	while (!WindowShouldClose())
 	{
-		MainLoop();
+		MainLoop(&game_state);
 	}
 #endif // PLATFORM_WEB
 
 	CloseWindow();	// Close window and unload OpenGL context
-	free(g_gameState.pieces);
+	free(game_state.pieces);
 	return 0;
 }
 
-void InitGame(void)
+void InitGame(GameState* game_state)
 {
-	g_gameState.pieces = calloc(32, sizeof(Piece));
+	game_state->pieces = calloc(32, sizeof(Piece));
 
 	for(int i = 0; i < 32; ++i) {
-		g_gameState.pieces[i].selected = false;
+		game_state->pieces[i].selected = false;
 	}
 
-	g_gameState.pieces[0].type = ROOK;
-	g_gameState.pieces[0].letter = 'A';
-	g_gameState.pieces[0].number = 1;
-	g_gameState.pieces[0].color = PIECE_WHITE;
+	game_state->pieces[0].type = ROOK;
+	game_state->pieces[0].letter = 'A';
+	game_state->pieces[0].number = 1;
+	game_state->pieces[0].color = PIECE_WHITE;
 
-	g_gameState.pieces[1].type = KNIGHT;
-	g_gameState.pieces[1].letter = 'B';
-	g_gameState.pieces[1].number = 1;
-	g_gameState.pieces[1].color = PIECE_WHITE;
+	game_state->pieces[1].type = KNIGHT;
+	game_state->pieces[1].letter = 'B';
+	game_state->pieces[1].number = 1;
+	game_state->pieces[1].color = PIECE_WHITE;
 
-	g_gameState.pieces[2].type = BISHOP;
-	g_gameState.pieces[2].letter = 'C';
-	g_gameState.pieces[2].number = 1;
-	g_gameState.pieces[2].color = PIECE_WHITE;
+	game_state->pieces[2].type = BISHOP;
+	game_state->pieces[2].letter = 'C';
+	game_state->pieces[2].number = 1;
+	game_state->pieces[2].color = PIECE_WHITE;
 
-	g_gameState.pieces[3].type = QUEEN;
-	g_gameState.pieces[3].letter = 'D';
-	g_gameState.pieces[3].number = 1;
-	g_gameState.pieces[3].color = PIECE_WHITE;
+	game_state->pieces[3].type = QUEEN;
+	game_state->pieces[3].letter = 'D';
+	game_state->pieces[3].number = 1;
+	game_state->pieces[3].color = PIECE_WHITE;
 
-	g_gameState.pieces[4].type = KING;
-	g_gameState.pieces[4].letter = 'E';
-	g_gameState.pieces[4].number = 1;
-	g_gameState.pieces[4].color = PIECE_WHITE;
+	game_state->pieces[4].type = KING;
+	game_state->pieces[4].letter = 'E';
+	game_state->pieces[4].number = 1;
+	game_state->pieces[4].color = PIECE_WHITE;
 
-	g_gameState.pieces[5].type = BISHOP;
-	g_gameState.pieces[5].letter = 'F';
-	g_gameState.pieces[5].number = 1;
-	g_gameState.pieces[5].color = PIECE_WHITE;
+	game_state->pieces[5].type = BISHOP;
+	game_state->pieces[5].letter = 'F';
+	game_state->pieces[5].number = 1;
+	game_state->pieces[5].color = PIECE_WHITE;
 
-	g_gameState.pieces[6].type = KNIGHT;
-	g_gameState.pieces[6].letter = 'G';
-	g_gameState.pieces[6].number = 1;
-	g_gameState.pieces[6].color = PIECE_WHITE;
+	game_state->pieces[6].type = KNIGHT;
+	game_state->pieces[6].letter = 'G';
+	game_state->pieces[6].number = 1;
+	game_state->pieces[6].color = PIECE_WHITE;
 
-	g_gameState.pieces[7].type = ROOK;
-	g_gameState.pieces[7].letter = 'H';
-	g_gameState.pieces[7].number = 1;
-	g_gameState.pieces[7].color = PIECE_WHITE;
+	game_state->pieces[7].type = ROOK;
+	game_state->pieces[7].letter = 'H';
+	game_state->pieces[7].number = 1;
+	game_state->pieces[7].color = PIECE_WHITE;
 
-	g_gameState.pieces[8].type = PAWN;
-	g_gameState.pieces[8].letter = 'A';
-	g_gameState.pieces[8].number = 2;
-	g_gameState.pieces[8].color = PIECE_WHITE;
+	game_state->pieces[8].type = PAWN;
+	game_state->pieces[8].letter = 'A';
+	game_state->pieces[8].number = 2;
+	game_state->pieces[8].color = PIECE_WHITE;
 
-	g_gameState.pieces[9].type = PAWN;
-	g_gameState.pieces[9].letter = 'B';
-	g_gameState.pieces[9].number = 2;
-	g_gameState.pieces[9].color = PIECE_WHITE;
+	game_state->pieces[9].type = PAWN;
+	game_state->pieces[9].letter = 'B';
+	game_state->pieces[9].number = 2;
+	game_state->pieces[9].color = PIECE_WHITE;
 
-	g_gameState.pieces[10].type = PAWN;
-	g_gameState.pieces[10].letter = 'C';
-	g_gameState.pieces[10].number = 2;
-	g_gameState.pieces[10].color = PIECE_WHITE;
+	game_state->pieces[10].type = PAWN;
+	game_state->pieces[10].letter = 'C';
+	game_state->pieces[10].number = 2;
+	game_state->pieces[10].color = PIECE_WHITE;
 
-	g_gameState.pieces[11].type = PAWN;
-	g_gameState.pieces[11].letter = 'D';
-	g_gameState.pieces[11].number = 2;
-	g_gameState.pieces[11].color = PIECE_WHITE;
+	game_state->pieces[11].type = PAWN;
+	game_state->pieces[11].letter = 'D';
+	game_state->pieces[11].number = 2;
+	game_state->pieces[11].color = PIECE_WHITE;
 
-	g_gameState.pieces[12].type = PAWN;
-	g_gameState.pieces[12].letter = 'E';
-	g_gameState.pieces[12].number = 2;
-	g_gameState.pieces[12].color = PIECE_WHITE;
+	game_state->pieces[12].type = PAWN;
+	game_state->pieces[12].letter = 'E';
+	game_state->pieces[12].number = 2;
+	game_state->pieces[12].color = PIECE_WHITE;
 
-	g_gameState.pieces[13].type = PAWN;
-	g_gameState.pieces[13].letter = 'F';
-	g_gameState.pieces[13].number = 2;
-	g_gameState.pieces[13].color = PIECE_WHITE;
+	game_state->pieces[13].type = PAWN;
+	game_state->pieces[13].letter = 'F';
+	game_state->pieces[13].number = 2;
+	game_state->pieces[13].color = PIECE_WHITE;
 
-	g_gameState.pieces[14].type = PAWN;
-	g_gameState.pieces[14].letter = 'G';
-	g_gameState.pieces[14].number = 2;
-	g_gameState.pieces[14].color = PIECE_WHITE;
+	game_state->pieces[14].type = PAWN;
+	game_state->pieces[14].letter = 'G';
+	game_state->pieces[14].number = 2;
+	game_state->pieces[14].color = PIECE_WHITE;
 
-	g_gameState.pieces[15].type = PAWN;
-	g_gameState.pieces[15].letter = 'H';
-	g_gameState.pieces[15].number = 2;
-	g_gameState.pieces[15].color = PIECE_WHITE;
+	game_state->pieces[15].type = PAWN;
+	game_state->pieces[15].letter = 'H';
+	game_state->pieces[15].number = 2;
+	game_state->pieces[15].color = PIECE_WHITE;
 
 	// ------------------
 
-	g_gameState.pieces[16].type = ROOK;
-	g_gameState.pieces[16].letter = 'A';
-	g_gameState.pieces[16].number = 8;
-	g_gameState.pieces[16].color = PIECE_BLACK;
+	game_state->pieces[16].type = ROOK;
+	game_state->pieces[16].letter = 'A';
+	game_state->pieces[16].number = 8;
+	game_state->pieces[16].color = PIECE_BLACK;
 
-	g_gameState.pieces[17].type = KNIGHT;
-	g_gameState.pieces[17].letter = 'B';
-	g_gameState.pieces[17].number = 8;
-	g_gameState.pieces[17].color = PIECE_BLACK;
+	game_state->pieces[17].type = KNIGHT;
+	game_state->pieces[17].letter = 'B';
+	game_state->pieces[17].number = 8;
+	game_state->pieces[17].color = PIECE_BLACK;
 
-	g_gameState.pieces[18].type = BISHOP;
-	g_gameState.pieces[18].letter = 'C';
-	g_gameState.pieces[18].number = 8;
-	g_gameState.pieces[18].color = PIECE_BLACK;
+	game_state->pieces[18].type = BISHOP;
+	game_state->pieces[18].letter = 'C';
+	game_state->pieces[18].number = 8;
+	game_state->pieces[18].color = PIECE_BLACK;
 
-	g_gameState.pieces[19].type = QUEEN;
-	g_gameState.pieces[19].letter = 'D';
-	g_gameState.pieces[19].number = 8;
-	g_gameState.pieces[19].color = PIECE_BLACK;
+	game_state->pieces[19].type = QUEEN;
+	game_state->pieces[19].letter = 'D';
+	game_state->pieces[19].number = 8;
+	game_state->pieces[19].color = PIECE_BLACK;
 
-	g_gameState.pieces[20].type = KING;
-	g_gameState.pieces[20].letter = 'E';
-	g_gameState.pieces[20].number = 8;
-	g_gameState.pieces[20].color = PIECE_BLACK;
+	game_state->pieces[20].type = KING;
+	game_state->pieces[20].letter = 'E';
+	game_state->pieces[20].number = 8;
+	game_state->pieces[20].color = PIECE_BLACK;
 
-	g_gameState.pieces[21].type = BISHOP;
-	g_gameState.pieces[21].letter = 'F';
-	g_gameState.pieces[21].number = 8;
-	g_gameState.pieces[21].color = PIECE_BLACK;
+	game_state->pieces[21].type = BISHOP;
+	game_state->pieces[21].letter = 'F';
+	game_state->pieces[21].number = 8;
+	game_state->pieces[21].color = PIECE_BLACK;
 
-	g_gameState.pieces[22].type = KNIGHT;
-	g_gameState.pieces[22].letter = 'G';
-	g_gameState.pieces[22].number = 8;
-	g_gameState.pieces[22].color = PIECE_BLACK;
+	game_state->pieces[22].type = KNIGHT;
+	game_state->pieces[22].letter = 'G';
+	game_state->pieces[22].number = 8;
+	game_state->pieces[22].color = PIECE_BLACK;
 
-	g_gameState.pieces[23].type = ROOK;
-	g_gameState.pieces[23].letter = 'H';
-	g_gameState.pieces[23].number = 8;
-	g_gameState.pieces[23].color = PIECE_BLACK;
+	game_state->pieces[23].type = ROOK;
+	game_state->pieces[23].letter = 'H';
+	game_state->pieces[23].number = 8;
+	game_state->pieces[23].color = PIECE_BLACK;
 
-	g_gameState.pieces[24].type = PAWN;
-	g_gameState.pieces[24].letter = 'A';
-	g_gameState.pieces[24].number = 7;
-	g_gameState.pieces[24].color = PIECE_BLACK;
+	game_state->pieces[24].type = PAWN;
+	game_state->pieces[24].letter = 'A';
+	game_state->pieces[24].number = 7;
+	game_state->pieces[24].color = PIECE_BLACK;
 
-	g_gameState.pieces[25].type = PAWN;
-	g_gameState.pieces[25].letter = 'B';
-	g_gameState.pieces[25].number = 7;
-	g_gameState.pieces[25].color = PIECE_BLACK;
+	game_state->pieces[25].type = PAWN;
+	game_state->pieces[25].letter = 'B';
+	game_state->pieces[25].number = 7;
+	game_state->pieces[25].color = PIECE_BLACK;
 
-	g_gameState.pieces[26].type = PAWN;
-	g_gameState.pieces[26].letter = 'C';
-	g_gameState.pieces[26].number = 7;
-	g_gameState.pieces[26].color = PIECE_BLACK;
+	game_state->pieces[26].type = PAWN;
+	game_state->pieces[26].letter = 'C';
+	game_state->pieces[26].number = 7;
+	game_state->pieces[26].color = PIECE_BLACK;
 
-	g_gameState.pieces[27].type = PAWN;
-	g_gameState.pieces[27].letter = 'D';
-	g_gameState.pieces[27].number = 7;
-	g_gameState.pieces[27].color = PIECE_BLACK;
+	game_state->pieces[27].type = PAWN;
+	game_state->pieces[27].letter = 'D';
+	game_state->pieces[27].number = 7;
+	game_state->pieces[27].color = PIECE_BLACK;
 
-	g_gameState.pieces[28].type = PAWN;
-	g_gameState.pieces[28].letter = 'E';
-	g_gameState.pieces[28].number = 7;
-	g_gameState.pieces[28].color = PIECE_BLACK;
+	game_state->pieces[28].type = PAWN;
+	game_state->pieces[28].letter = 'E';
+	game_state->pieces[28].number = 7;
+	game_state->pieces[28].color = PIECE_BLACK;
 
-	g_gameState.pieces[29].type = PAWN;
-	g_gameState.pieces[29].letter = 'F';
-	g_gameState.pieces[29].number = 7;
-	g_gameState.pieces[29].color = PIECE_BLACK;
+	game_state->pieces[29].type = PAWN;
+	game_state->pieces[29].letter = 'F';
+	game_state->pieces[29].number = 7;
+	game_state->pieces[29].color = PIECE_BLACK;
 
-	g_gameState.pieces[30].type = PAWN;
-	g_gameState.pieces[30].letter = 'G';
-	g_gameState.pieces[30].number = 7;
-	g_gameState.pieces[30].color = PIECE_BLACK;
+	game_state->pieces[30].type = PAWN;
+	game_state->pieces[30].letter = 'G';
+	game_state->pieces[30].number = 7;
+	game_state->pieces[30].color = PIECE_BLACK;
 
-	g_gameState.pieces[31].type = PAWN;
-	g_gameState.pieces[31].letter = 'H';
-	g_gameState.pieces[31].number = 7;
-	g_gameState.pieces[31].color = PIECE_BLACK;
+	game_state->pieces[31].type = PAWN;
+	game_state->pieces[31].letter = 'H';
+	game_state->pieces[31].number = 7;
+	game_state->pieces[31].color = PIECE_BLACK;
 }
 
-void MainLoop(void)
+#ifdef PLATFORM_WEB
+void MainLoop(void *gs)
 {
+	GameState* game_state = (GameState*) gs;
+#else
+void MainLoop(GameState *game_state)
+{
+#endif
 	int w = GetScreenWidth();
 	int h = GetScreenHeight();
 
@@ -265,9 +275,9 @@ void MainLoop(void)
 	if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 		for(int i = 0; i < 32; ++i) {
 			Vector2 mouse_pos = GetMousePosition();
-			Piece p = g_gameState.pieces[i];
+			Piece p = game_state->pieces[i];
 			if(CheckCollisionPointRec(mouse_pos, p.position)) {
-				g_gameState.pieces[i].selected = true;
+				game_state->pieces[i].selected = true;
 			}
 		}
 	}
@@ -275,9 +285,9 @@ void MainLoop(void)
 	if(IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
 		Vector2 mp = GetMouseDelta();
 		for(int i = 0; i < 32; ++i) {
-			if(g_gameState.pieces[i].selected) {
-				g_gameState.pieces[i].position.x += mp.x;
-				g_gameState.pieces[i].position.y += mp.y;
+			if(game_state->pieces[i].selected) {
+				game_state->pieces[i].position.x += mp.x;
+				game_state->pieces[i].position.y += mp.y;
 			}
 		}
 	} else {
@@ -286,10 +296,10 @@ void MainLoop(void)
 			for(int j = 0; j < 10; ++j) {
 				if(CheckCollisionPointRec(mp, g_board[i][j])) {
 					for(int k = 0; k < 32; ++k) {
-						if(g_gameState.pieces[k].selected) {
-							g_gameState.pieces[k].selected = false;
-							g_gameState.pieces[k].letter = 'A' + i-1;
-							g_gameState.pieces[k].number = j;
+						if(game_state->pieces[k].selected) {
+							game_state->pieces[k].selected = false;
+							game_state->pieces[k].letter = 'A' + i-1;
+							game_state->pieces[k].number = j;
 						}
 					}
 				}
@@ -298,29 +308,29 @@ void MainLoop(void)
 	}
 
 	for(int i = 0; i < 32; ++i) {
-		int x = g_gameState.pieces[i].letter - 'A';
-		int y = g_gameState.pieces[i].number - 1;
-		if(!g_gameState.pieces[i].selected) {
-			g_gameState.pieces[i].position = g_board[x+1][y+1];
+		int x = game_state->pieces[i].letter - 'A';
+		int y = game_state->pieces[i].number - 1;
+		if(!game_state->pieces[i].selected) {
+			game_state->pieces[i].position = g_board[x+1][y+1];
 		}
 	}
 
 
 	BeginDrawing();
-	DrawGame();
+	DrawGame(game_state);
 	EndDrawing();
 }
 
-void DrawGame(void)
+void DrawGame(GameState *game_state)
 {
 	DrawBoard();
-	DrawPieces();
+	DrawPieces(game_state);
 }
 
-void DrawPieces(void)
+void DrawPieces(GameState *game_state)
 {
 	for(int i = 0; i < 32; ++i) {
-		Piece p = g_gameState.pieces[i];
+		Piece p = game_state->pieces[i];
 		Color color;
 		if(p.color == PIECE_BLACK) {
 			color = GetColor(0x281900FF);
