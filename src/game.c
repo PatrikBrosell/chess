@@ -16,13 +16,6 @@ typedef enum PIECE_TYPE {
 	PAWN,
 } PIECE_TYPE;
 
-typedef struct Square {
-	int x;
-	int y;
-	int piece;
-	int color;
-} Square;
-
 typedef enum PIECE_COLOR {
 	PIECE_BLACK,
 	PIECE_WHITE,
