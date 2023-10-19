@@ -11,5 +11,6 @@ typedef struct UserInterfaceData {
 
 void DrawPieces(GameState*);
 void DrawTextCenterRect(const char*, Rectangle, Color);
+void DrawBoard(GameState*, UserInterfaceData*);
 
 #endif // UI_H
