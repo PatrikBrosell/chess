@@ -5,6 +5,8 @@
 
 typedef struct UserInterfaceData {
 	int square_size;
+	int screen_width;
+	int screen_height;
 } UserInterfaceData;
 
 void DrawPieces(GameState*);

@@ -23,21 +23,20 @@ static void MainLoop(main_loop_args_t*);
 static void DrawBoard(GameState*, UserInterfaceData*);
 static void DrawGame(GameState*, UserInterfaceData*);
 
-int g_screenWidth = 800;
-int g_screenHeight = 800;
-
 int main(void)
 {
 	main_loop_args_t args = {0};
 	GameState game_state = {0};
 	UserInterfaceData uid = {0};
+	uid.screen_width = 800;
+	uid.screen_height = 800;
 	args.gs = &game_state;
 	args.uid = &uid;
 	InitGame(&game_state);
 
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 
-	InitWindow(g_screenWidth, g_screenHeight, "window title name");
+	InitWindow(uid.screen_width, uid.screen_height, "window title name");
 
 #if defined(PLATFORM_WEB)
 	emscripten_set_main_loop_arg(MainLoop, &args, 0, 1);
