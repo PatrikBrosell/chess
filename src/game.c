@@ -9,23 +9,30 @@
     #include <emscripten/emscripten.h>
 #endif
 
+typedef struct main_loop_args_t {
+	GameState* gs;
+	UserInterfaceData* uid;
+} main_loop_args_t;
+
 #ifdef PLATFORM_WEB
 static void MainLoop(void*);
 #else
-static void MainLoop(GameState*);
+static void MainLoop(main_loop_args_t*);
 #endif
 
-static void DrawBoard(GameState*);
-static void DrawGame(GameState*);
-
-int g_square_size = 100;
+static void DrawBoard(GameState*, UserInterfaceData*);
+static void DrawGame(GameState*, UserInterfaceData*);
 
 int g_screenWidth = 800;
 int g_screenHeight = 800;
 
 int main(void)
 {
+	main_loop_args_t args = {0};
 	GameState game_state = {0};
+	UserInterfaceData uid = {0};
+	args.gs = &game_state;
+	args.uid = &uid;
 	InitGame(&game_state);
 
 	SetConfigFlags(FLAG_WINDOW_RESIZABLE);
@@ -33,13 +40,13 @@ int main(void)
 	InitWindow(g_screenWidth, g_screenHeight, "window title name");
 
 #if defined(PLATFORM_WEB)
-	emscripten_set_main_loop_arg(MainLoop, &game_state, 0, 1);
+	emscripten_set_main_loop_arg(MainLoop, &args, 0, 1);
 #else
 
 	SetTargetFPS(60);
 	while (!WindowShouldClose())
 	{
-		MainLoop(&game_state);
+		MainLoop(&args);
 	}
 #endif // PLATFORM_WEB
 
@@ -49,20 +56,23 @@ int main(void)
 }
 
 #ifdef PLATFORM_WEB
-void MainLoop(void *gs)
+void MainLoop(void *_args)
 {
-	GameState* game_state = (GameState*) gs;
+	main_loop_args_t* args = (main_loop_args_t*) _args;
 #else
-void MainLoop(GameState *game_state)
+void MainLoop(main_loop_args_t* args)
 {
 #endif
+	GameState* game_state = args->gs;
+	UserInterfaceData* uid = args->uid;
+	uid->square_size = 100;
 	int w = GetScreenWidth();
 	int h = GetScreenHeight();
 
 	int win_size = w < h ? w : h;
 
 	// Board is 8 + 0.5 + 0.5 = 9 squares wide
-	g_square_size = win_size / 9;
+	uid->square_size = win_size / 9;
 
 	if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
 		for(int i = 0; i < 32; ++i) {
@@ -109,35 +119,35 @@ void MainLoop(GameState *game_state)
 
 
 	BeginDrawing();
-	DrawGame(game_state);
+	DrawGame(game_state, uid);
 	EndDrawing();
 }
 
-void DrawGame(GameState *game_state)
+void DrawGame(GameState *game_state, UserInterfaceData *uid)
 {
-	DrawBoard(game_state);
+	DrawBoard(game_state, uid);
 	DrawPieces(game_state);
 }
 
-void DrawBoard(GameState *game_state)
+void DrawBoard(GameState *game_state, UserInterfaceData *uid)
 {
 	ClearBackground(GetColor(0x151515FF));
 	for(int x = 0, black = 0; x < 10; ++x) {
 		for(int y = 0; y < 10; ++y) {
 			if(x == 0 && y == 0) {
-				game_state->board[x][y] = (Rectangle) {g_square_size/2*x, g_square_size/2*y, g_square_size/2, g_square_size/2};
+				game_state->board[x][y] = (Rectangle) {uid->square_size/2*x, uid->square_size/2*y, uid->square_size/2, uid->square_size/2};
 			} else if(x == 9 && y == 9) {
-				game_state->board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size/2, g_square_size/2};
+				game_state->board[x][y] = (Rectangle) {uid->square_size*x-uid->square_size/2, uid->square_size*y-uid->square_size/2, uid->square_size/2, uid->square_size/2};
 			} else if(x == 9) {
-				game_state->board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size/2, g_square_size};
+				game_state->board[x][y] = (Rectangle) {uid->square_size*x-uid->square_size/2, uid->square_size*y-uid->square_size/2, uid->square_size/2, uid->square_size};
 			} else if(y == 9) {
-				game_state->board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size, g_square_size/2};
+				game_state->board[x][y] = (Rectangle) {uid->square_size*x-uid->square_size/2, uid->square_size*y-uid->square_size/2, uid->square_size, uid->square_size/2};
 			} else if(x == 0) {
-				game_state->board[x][y] = (Rectangle) {g_square_size*x, g_square_size*y-g_square_size/2, g_square_size/2, g_square_size};
+				game_state->board[x][y] = (Rectangle) {uid->square_size*x, uid->square_size*y-uid->square_size/2, uid->square_size/2, uid->square_size};
 			} else if(y == 0) {
-				game_state->board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y, g_square_size, g_square_size/2};
+				game_state->board[x][y] = (Rectangle) {uid->square_size*x-uid->square_size/2, uid->square_size*y, uid->square_size, uid->square_size/2};
 			} else {
-				game_state->board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size, g_square_size};
+				game_state->board[x][y] = (Rectangle) {uid->square_size*x-uid->square_size/2, uid->square_size*y-uid->square_size/2, uid->square_size, uid->square_size};
 			}
 			if(black) {
 				DrawRectangleRec(game_state->board[x][y], BLACK);
