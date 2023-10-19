@@ -3,6 +3,12 @@
 
 #include <raylib.h>
 
+void DrawGame(GameState *game_state, UserInterfaceData *uid)
+{
+	DrawBoard(game_state, uid);
+	DrawPieces(game_state);
+}
+
 void DrawBoard(GameState *game_state, UserInterfaceData *uid)
 {
 	ClearBackground(GetColor(0x151515FF));

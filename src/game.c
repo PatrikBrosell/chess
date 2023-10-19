@@ -20,8 +20,6 @@ static void MainLoop(void*);
 static void MainLoop(main_loop_args_t*);
 #endif
 
-static void DrawGame(GameState*, UserInterfaceData*);
-
 int main(void)
 {
 	main_loop_args_t args = {0};
@@ -119,10 +117,4 @@ void MainLoop(main_loop_args_t* args)
 	BeginDrawing();
 	DrawGame(game_state, uid);
 	EndDrawing();
-}
-
-void DrawGame(GameState *game_state, UserInterfaceData *uid)
-{
-	DrawBoard(game_state, uid);
-	DrawPieces(game_state);
 }

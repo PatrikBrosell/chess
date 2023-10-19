@@ -9,6 +9,7 @@ typedef struct UserInterfaceData {
 	int screen_height;
 } UserInterfaceData;
 
+void DrawGame(GameState*, UserInterfaceData*);
 void DrawPieces(GameState*);
 void DrawTextCenterRect(const char*, Rectangle, Color);
 void DrawBoard(GameState*, UserInterfaceData*);
