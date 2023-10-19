@@ -2,37 +2,11 @@
 #include <stdio.h>
 #include <raylib.h>
 
+#include "game_state.h"
+
 #if defined(PLATFORM_WEB)
     #include <emscripten/emscripten.h>
 #endif
-
-typedef enum PIECE_TYPE {
-	EMPTY,
-	KING,
-	QUEEN,
-	ROOK,
-	BISHOP,
-	KNIGHT,
-	PAWN,
-} PIECE_TYPE;
-
-typedef enum PIECE_COLOR {
-	PIECE_BLACK,
-	PIECE_WHITE,
-} PIECE_COLOR;
-
-typedef struct Piece {
-	PIECE_TYPE type;
-	PIECE_COLOR color;
-	Rectangle position;
-	int letter;		// Letter
-	int number;		// Number
-	bool selected;
-} Piece;
-
-typedef struct {
-	Piece* pieces;
-} GameState;
 
 #ifdef PLATFORM_WEB
 static void MainLoop(void*);
