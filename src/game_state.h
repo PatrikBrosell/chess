@@ -29,6 +29,7 @@ typedef struct Piece {
 
 typedef struct {
 	Piece* pieces;
+	Rectangle board[10][10];
 } GameState;
 
 void InitGame(GameState*);

@@ -15,12 +15,10 @@ static void MainLoop(void*);
 static void MainLoop(GameState*);
 #endif
 
-static void DrawBoard(void);
+static void DrawBoard(GameState*);
 static void DrawGame(GameState*);
 
 int g_square_size = 100;
-
-Rectangle g_board[10][10] = {0};
 
 int g_screenWidth = 800;
 int g_screenHeight = 800;
@@ -88,7 +86,7 @@ void MainLoop(GameState *game_state)
 		Vector2 mp = GetMousePosition();
 		for(int i = 0; i < 10; ++i) {
 			for(int j = 0; j < 10; ++j) {
-				if(CheckCollisionPointRec(mp, g_board[i][j])) {
+				if(CheckCollisionPointRec(mp, game_state->board[i][j])) {
 					for(int k = 0; k < 32; ++k) {
 						if(game_state->pieces[k].selected) {
 							game_state->pieces[k].selected = false;
@@ -105,7 +103,7 @@ void MainLoop(GameState *game_state)
 		int x = game_state->pieces[i].letter - 'A';
 		int y = game_state->pieces[i].number - 1;
 		if(!game_state->pieces[i].selected) {
-			game_state->pieces[i].position = g_board[x+1][y+1];
+			game_state->pieces[i].position = game_state->board[x+1][y+1];
 		}
 	}
 
@@ -117,34 +115,34 @@ void MainLoop(GameState *game_state)
 
 void DrawGame(GameState *game_state)
 {
-	DrawBoard();
+	DrawBoard(game_state);
 	DrawPieces(game_state);
 }
 
-void DrawBoard(void)
+void DrawBoard(GameState *game_state)
 {
 	ClearBackground(GetColor(0x151515FF));
 	for(int x = 0, black = 0; x < 10; ++x) {
 		for(int y = 0; y < 10; ++y) {
 			if(x == 0 && y == 0) {
-				g_board[x][y] = (Rectangle) {g_square_size/2*x, g_square_size/2*y, g_square_size/2, g_square_size/2};
+				game_state->board[x][y] = (Rectangle) {g_square_size/2*x, g_square_size/2*y, g_square_size/2, g_square_size/2};
 			} else if(x == 9 && y == 9) {
-				g_board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size/2, g_square_size/2};
+				game_state->board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size/2, g_square_size/2};
 			} else if(x == 9) {
-				g_board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size/2, g_square_size};
+				game_state->board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size/2, g_square_size};
 			} else if(y == 9) {
-				g_board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size, g_square_size/2};
+				game_state->board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size, g_square_size/2};
 			} else if(x == 0) {
-				g_board[x][y] = (Rectangle) {g_square_size*x, g_square_size*y-g_square_size/2, g_square_size/2, g_square_size};
+				game_state->board[x][y] = (Rectangle) {g_square_size*x, g_square_size*y-g_square_size/2, g_square_size/2, g_square_size};
 			} else if(y == 0) {
-				g_board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y, g_square_size, g_square_size/2};
+				game_state->board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y, g_square_size, g_square_size/2};
 			} else {
-				g_board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size, g_square_size};
+				game_state->board[x][y] = (Rectangle) {g_square_size*x-g_square_size/2, g_square_size*y-g_square_size/2, g_square_size, g_square_size};
 			}
 			if(black) {
-				DrawRectangleRec(g_board[x][y], BLACK);
+				DrawRectangleRec(game_state->board[x][y], BLACK);
 			} else {
-				DrawRectangleRec(g_board[x][y], WHITE);
+				DrawRectangleRec(game_state->board[x][y], WHITE);
 			}
 			black ^= 1;
 		}
@@ -155,36 +153,36 @@ void DrawBoard(void)
 	for(int i = 0; i < 10; ++i) {
 		switch(i) {
 			case 1:
-				DrawTextCenterRect("1", g_board[0][i], SKYBLUE);
-				DrawTextCenterRect("1", g_board[9][i], SKYBLUE);
+				DrawTextCenterRect("1", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("1", game_state->board[9][i], SKYBLUE);
 				break;
 			case 2:
-				DrawTextCenterRect("2", g_board[0][i], SKYBLUE);
-				DrawTextCenterRect("2", g_board[9][i], SKYBLUE);
+				DrawTextCenterRect("2", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("2", game_state->board[9][i], SKYBLUE);
 				break;
 			case 3:
-				DrawTextCenterRect("3", g_board[0][i], SKYBLUE);
-				DrawTextCenterRect("3", g_board[9][i], SKYBLUE);
+				DrawTextCenterRect("3", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("3", game_state->board[9][i], SKYBLUE);
 				break;
 			case 4:
-				DrawTextCenterRect("4", g_board[0][i], SKYBLUE);
-				DrawTextCenterRect("4", g_board[9][i], SKYBLUE);
+				DrawTextCenterRect("4", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("4", game_state->board[9][i], SKYBLUE);
 				break;
 			case 5:
-				DrawTextCenterRect("5", g_board[0][i], SKYBLUE);
-				DrawTextCenterRect("5", g_board[9][i], SKYBLUE);
+				DrawTextCenterRect("5", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("5", game_state->board[9][i], SKYBLUE);
 				break;
 			case 6:
-				DrawTextCenterRect("6", g_board[0][i], SKYBLUE);
-				DrawTextCenterRect("6", g_board[9][i], SKYBLUE);
+				DrawTextCenterRect("6", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("6", game_state->board[9][i], SKYBLUE);
 				break;
 			case 7:
-				DrawTextCenterRect("7", g_board[0][i], SKYBLUE);
-				DrawTextCenterRect("7", g_board[9][i], SKYBLUE);
+				DrawTextCenterRect("7", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("7", game_state->board[9][i], SKYBLUE);
 				break;
 			case 8:
-				DrawTextCenterRect("8", g_board[0][i], SKYBLUE);
-				DrawTextCenterRect("8", g_board[9][i], SKYBLUE);
+				DrawTextCenterRect("8", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("8", game_state->board[9][i], SKYBLUE);
 				break;
 		}
 	}
@@ -193,36 +191,36 @@ void DrawBoard(void)
 	for(int i = 0; i < 10; ++i) {
 		switch(i) {
 			case 1:
-				DrawTextCenterRect("A", g_board[i][0], SKYBLUE);
-				DrawTextCenterRect("A", g_board[i][9], SKYBLUE);
+				DrawTextCenterRect("A", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("A", game_state->board[i][9], SKYBLUE);
 				break;
 			case 2:
-				DrawTextCenterRect("B", g_board[i][0], SKYBLUE);
-				DrawTextCenterRect("B", g_board[i][9], SKYBLUE);
+				DrawTextCenterRect("B", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("B", game_state->board[i][9], SKYBLUE);
 				break;
 			case 3:
-				DrawTextCenterRect("C", g_board[i][0], SKYBLUE);
-				DrawTextCenterRect("C", g_board[i][9], SKYBLUE);
+				DrawTextCenterRect("C", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("C", game_state->board[i][9], SKYBLUE);
 				break;
 			case 4:
-				DrawTextCenterRect("D", g_board[i][0], SKYBLUE);
-				DrawTextCenterRect("D", g_board[i][9], SKYBLUE);
+				DrawTextCenterRect("D", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("D", game_state->board[i][9], SKYBLUE);
 				break;
 			case 5:
-				DrawTextCenterRect("E", g_board[i][0], SKYBLUE);
-				DrawTextCenterRect("E", g_board[i][9], SKYBLUE);
+				DrawTextCenterRect("E", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("E", game_state->board[i][9], SKYBLUE);
 				break;
 			case 6:
-				DrawTextCenterRect("F", g_board[i][0], SKYBLUE);
-				DrawTextCenterRect("F", g_board[i][9], SKYBLUE);
+				DrawTextCenterRect("F", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("F", game_state->board[i][9], SKYBLUE);
 				break;
 			case 7:
-				DrawTextCenterRect("G", g_board[i][0], SKYBLUE);
-				DrawTextCenterRect("G", g_board[i][9], SKYBLUE);
+				DrawTextCenterRect("G", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("G", game_state->board[i][9], SKYBLUE);
 				break;
 			case 8:
-				DrawTextCenterRect("H", g_board[i][0], SKYBLUE);
-				DrawTextCenterRect("H", g_board[i][9], SKYBLUE);
+				DrawTextCenterRect("H", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("H", game_state->board[i][9], SKYBLUE);
 				break;
 		}
 	}
