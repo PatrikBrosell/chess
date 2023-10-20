@@ -10,7 +10,7 @@ typedef struct UserInterfaceData {
 } UserInterfaceData;
 
 void DrawGame(GameState*, UserInterfaceData*);
-void DrawPieces(GameState*);
+void DrawPieces(GameState*, UserInterfaceData*);
 void DrawTextCenterRect(const char*, Rectangle, Color);
 void DrawBoard(GameState*, UserInterfaceData*);
 

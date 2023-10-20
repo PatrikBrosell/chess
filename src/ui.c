@@ -6,7 +6,7 @@
 void DrawGame(GameState *game_state, UserInterfaceData *uid)
 {
 	DrawBoard(game_state, uid);
-	DrawPieces(game_state);
+	DrawPieces(game_state, uid);
 }
 
 void DrawBoard(GameState *game_state, UserInterfaceData *uid)
@@ -138,33 +138,61 @@ void DrawTextCenterRect(const char* text, Rectangle rect, Color color)
 	DrawText(text, x2, y2, 40, color);
 }
 
-void DrawPieces(GameState *game_state)
+void DrawPieces(GameState *game_state, UserInterfaceData *uid)
 {
+	int x, y;
 	for(int i = 0; i < 32; ++i) {
 		Piece p = game_state->pieces[i];
 		Color color;
+		Color bg_color;
 		if(p.color == PIECE_BLACK) {
 			color = GetColor(0x281900FF);
+			bg_color = GetColor(0x000000FF);
 		} else if(p.color == PIECE_WHITE) {
 			color = GetColor(0xFFD899FF);
+			bg_color = GetColor(0xFFFFFFFF);
 		}
 		switch(p.type) {
 			case KING:
+				x = p.position.x + p.position.width/2;
+				y = p.position.y + p.position.height/2;
+				DrawCircle(x, y, uid->square_size/2, BROWN);
+				DrawCircle(x, y, uid->square_size/2-4, bg_color);
 				DrawTextCenterRect("Kng", p.position, color);
 				break;
 			case QUEEN:
+				x = p.position.x + p.position.width/2;
+				y = p.position.y + p.position.height/2;
+				DrawCircle(x, y, uid->square_size/2, BROWN);
+				DrawCircle(x, y, uid->square_size/2-4, bg_color);
 				DrawTextCenterRect("Qu", p.position, color);
 				break;
 			case ROOK:
+				x = p.position.x + p.position.width/2;
+				y = p.position.y + p.position.height/2;
+				DrawCircle(x, y, uid->square_size/2, BROWN);
+				DrawCircle(x, y, uid->square_size/2-4, bg_color);
 				DrawTextCenterRect("R", p.position, color);
 				break;
 			case BISHOP:
+				x = p.position.x + p.position.width/2;
+				y = p.position.y + p.position.height/2;
+				DrawCircle(x, y, uid->square_size/2, BROWN);
+				DrawCircle(x, y, uid->square_size/2-4, bg_color);
 				DrawTextCenterRect("B", p.position, color);
 				break;
 			case KNIGHT:
+				x = p.position.x + p.position.width/2;
+				y = p.position.y + p.position.height/2;
+				DrawCircle(x, y, uid->square_size/2, BROWN);
+				DrawCircle(x, y, uid->square_size/2-4, bg_color);
 				DrawTextCenterRect("Kn", p.position, color);
 				break;
 			case PAWN:
+				x = p.position.x + p.position.width/2;
+				y = p.position.y + p.position.height/2;
+				DrawCircle(x, y, uid->square_size/2, BROWN);
+				DrawCircle(x, y, uid->square_size/2-4, bg_color);
 				DrawTextCenterRect("P", p.position, color);
 				break;
 			case EMPTY:
