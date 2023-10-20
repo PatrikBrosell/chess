@@ -25,6 +25,7 @@ typedef struct Piece {
 	int letter;		// Letter
 	int number;		// Number
 	bool selected;
+	char name[4];
 } Piece;
 
 typedef struct {
