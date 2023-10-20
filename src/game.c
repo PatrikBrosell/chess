@@ -96,8 +96,7 @@ void MainLoop(main_loop_args_t* args)
 					for(int k = 0; k < 32; ++k) {
 						if(game_state->pieces[k].selected) {
 							game_state->pieces[k].selected = false;
-							game_state->pieces[k].letter = 'A' + i-1;
-							game_state->pieces[k].number = j;
+							MovePiece('A' + i-1, j, &game_state->pieces[k]);
 						}
 					}
 				}

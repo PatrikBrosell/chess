@@ -207,3 +207,9 @@ void InitGame(GameState* game_state)
 	game_state->pieces[31].number = 7;
 	game_state->pieces[31].color = PIECE_BLACK;
 }
+
+void MovePiece(int dest_letter, int dest_number, Piece* piece)
+{
+	piece->letter = dest_letter;
+	piece->number = dest_number;
+}

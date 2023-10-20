@@ -34,5 +34,6 @@ typedef struct {
 } GameState;
 
 void InitGame(GameState*);
+void MovePiece(int dest_letter, int dest_number, Piece*);
 
 #endif // GAME_STATE_H
