@@ -138,7 +138,7 @@ void DrawTextCenterRect(const char* text, Rectangle rect, Color color)
 	DrawText(text, x2, y2, 40, color);
 }
 
-void DrawPiece(Piece *piece, const char* text, int square_size)
+void DrawPiece(Piece *piece, int square_size)
 {
 	int x, y;
 	Color color = BLANK;
@@ -154,7 +154,7 @@ void DrawPiece(Piece *piece, const char* text, int square_size)
 	y = piece->position.y + piece->position.height/2;
 	DrawCircle(x, y, square_size/2, BROWN);
 	DrawCircle(x, y, square_size/2-4, bg_color);
-	DrawTextCenterRect(text, piece->position, color);
+	DrawTextCenterRect(piece->name, piece->position, color);
 }
 
 void DrawPieces(GameState *game_state, UserInterfaceData *uid)
@@ -162,27 +162,16 @@ void DrawPieces(GameState *game_state, UserInterfaceData *uid)
 	Piece p;
 	for(int i = 0; i < 32; ++i) {
 		p = game_state->pieces[i];
-		switch(p.type) {
-			case KING:
-				DrawPiece(&p, "Kng", uid->square_size);
-				break;
-			case QUEEN:
-				DrawPiece(&p, "Qu", uid->square_size);
-				break;
-			case ROOK:
-				DrawPiece(&p, "R", uid->square_size);
-				break;
-			case BISHOP:
-				DrawPiece(&p, "B", uid->square_size);
-				break;
-			case KNIGHT:
-				DrawPiece(&p, "Kn", uid->square_size);
-				break;
-			case PAWN:
-				DrawPiece(&p, "P", uid->square_size);
-				break;
-			case EMPTY:
-				continue;
+		if (p.selected) {
+			continue; // draw this piece last (on top)
+		}
+		DrawPiece(&p, uid->square_size);
+	}
+
+	for(int i = 0; i < 32; ++i) {
+		p = game_state->pieces[i];
+		if(p.selected) {
+			DrawPiece(&p, uid->square_size);
 		}
 	}
 }
