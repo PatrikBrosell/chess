@@ -208,8 +208,69 @@ void InitGame(GameState* game_state)
 	game_state->pieces[31].color = PIECE_BLACK;
 }
 
+bool IsMoveLegal(int dest_letter, int dest_number, int src_letter, int src_number, Piece* piece)
+{
+	switch(piece->type) {
+		case KING:
+			if (abs(src_letter - dest_letter) <= 1 && abs(src_number - dest_number) <= 1) {
+				return true;
+			} else {
+				return false;
+			}
+			break;
+		case QUEEN:
+			if(src_letter == dest_letter || src_number == dest_number) {
+				return true;
+			}
+			if( abs(src_letter - dest_letter) == abs(src_number - dest_number) ) {
+				return true;
+			}
+			break;
+		case ROOK:
+			if(src_letter == dest_letter || src_number == dest_number) {
+				return true;
+			}
+			break;
+		case BISHOP:
+			if( abs(src_letter - dest_letter) == abs(src_number - dest_number) ) {
+				return true;
+			}
+			break;
+		case KNIGHT:
+			if( abs(src_letter - dest_letter) == 2 && abs(src_number - dest_number) == 1 ) {
+				return true;
+			}
+			if( abs(src_number - dest_number) == 2 && abs(src_letter - dest_letter) == 1 ) {
+				return true;
+			}
+			break;
+		case PAWN:;
+			int direction;
+			direction = ((piece->color == PIECE_BLACK) ? 1: -1);
+			if( src_number == 2 || src_number == 7) {
+				if( (src_number - dest_number) == 2*direction && src_letter == dest_letter ) {
+					return true;
+				}
+				if( (src_number - dest_number) == direction && src_letter == dest_letter ) {
+					return true;
+				}
+			} else {
+				if( (src_number - dest_number) == direction && src_letter == dest_letter ) {
+					return true;
+				}
+			}
+			break;
+		case EMPTY:
+			return false;
+			break;
+	}
+	return false;
+}
+
 void MovePiece(int dest_letter, int dest_number, Piece* piece)
 {
-	piece->letter = dest_letter;
-	piece->number = dest_number;
+	if( IsMoveLegal(dest_letter, dest_number, piece->letter, piece->number, piece) ) {
+		piece->letter = dest_letter;
+		piece->number = dest_number;
+	}
 }

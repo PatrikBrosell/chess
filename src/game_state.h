@@ -35,5 +35,6 @@ typedef struct {
 
 void InitGame(GameState*);
 void MovePiece(int dest_letter, int dest_number, Piece*);
+bool IsMoveLegal(int dest_letter, int dest_number, int src_letter, int src_number, Piece*);
 
 #endif // GAME_STATE_H
