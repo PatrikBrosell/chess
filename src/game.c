@@ -90,13 +90,13 @@ void MainLoop(main_loop_args_t* args)
 		}
 	} else {
 		Vector2 mp = GetMousePosition();
-		for(int i = 0; i < 10; ++i) {
-			for(int j = 0; j < 10; ++j) {
-				if(CheckCollisionPointRec(mp, game_state->board[i][j])) {
+		for(int rank = 0; rank < 10; ++rank) {
+			for(int file = 0; file < 10; ++file) {
+				if(CheckCollisionPointRec(mp, game_state->board[rank][file])) {
 					for(int k = 0; k < 32; ++k) {
 						if(game_state->pieces[k].selected) {
 							game_state->pieces[k].selected = false;
-							MovePiece('A' + i-1, j, &game_state->pieces[k]);
+							MovePiece(rank, file, &game_state->pieces[k]);
 						}
 					}
 				}
@@ -105,10 +105,10 @@ void MainLoop(main_loop_args_t* args)
 	}
 
 	for(int i = 0; i < 32; ++i) {
-		int x = game_state->pieces[i].letter - 'A';
-		int y = game_state->pieces[i].number - 1;
+		int file = game_state->pieces[i].file;
+		int rank = game_state->pieces[i].rank;
 		if(!game_state->pieces[i].selected) {
-			game_state->pieces[i].position = game_state->board[x+1][y+1];
+			game_state->pieces[i].position = game_state->board[file][rank];
 		}
 	}
 
