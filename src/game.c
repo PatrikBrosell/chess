@@ -108,7 +108,7 @@ void MainLoop(main_loop_args_t* args)
 		int file = game_state->pieces[i].file;
 		int rank = game_state->pieces[i].rank;
 		if(!game_state->pieces[i].selected) {
-			game_state->pieces[i].position = game_state->board[file][rank];
+			game_state->pieces[i].position = game_state->board[rank][file];
 		}
 	}
 

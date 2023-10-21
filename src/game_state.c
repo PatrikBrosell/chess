@@ -267,7 +267,7 @@ bool IsMoveLegal(int dest_file, int dest_rank, int src_file, int src_rank, Piece
 	return false;
 }
 
-void MovePiece(int dest_file, int dest_rank, Piece* piece)
+void MovePiece(int dest_rank, int dest_file, Piece* piece)
 {
 	if( IsMoveLegal(dest_file, dest_rank, piece->file, piece->rank, piece) ) {
 		piece->file = dest_file;

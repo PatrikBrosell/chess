@@ -15,19 +15,19 @@ void DrawBoard(GameState *game_state, UserInterfaceData *uid)
 	for(int x = 0, black = 0; x < 10; ++x) {
 		for(int y = 0; y < 10; ++y) {
 			if(x == 0 && y == 0) {
-				game_state->board[x][y] = (Rectangle) {uid->square_size/2*x, uid->square_size/2*y, uid->square_size/2, uid->square_size/2};
+				game_state->board[x][y] = (Rectangle) {uid->square_size/2*y, uid->square_size/2*x, uid->square_size/2, uid->square_size/2};
 			} else if(x == 9 && y == 9) {
-				game_state->board[x][y] = (Rectangle) {uid->square_size*x-uid->square_size/2, uid->square_size*y-uid->square_size/2, uid->square_size/2, uid->square_size/2};
-			} else if(x == 9) {
-				game_state->board[x][y] = (Rectangle) {uid->square_size*x-uid->square_size/2, uid->square_size*y-uid->square_size/2, uid->square_size/2, uid->square_size};
+				game_state->board[x][y] = (Rectangle) {uid->square_size*y-uid->square_size/2, uid->square_size*x-uid->square_size/2, uid->square_size/2, uid->square_size/2};
 			} else if(y == 9) {
-				game_state->board[x][y] = (Rectangle) {uid->square_size*x-uid->square_size/2, uid->square_size*y-uid->square_size/2, uid->square_size, uid->square_size/2};
-			} else if(x == 0) {
-				game_state->board[x][y] = (Rectangle) {uid->square_size*x, uid->square_size*y-uid->square_size/2, uid->square_size/2, uid->square_size};
+				game_state->board[x][y] = (Rectangle) {uid->square_size*y-uid->square_size/2, uid->square_size*x-uid->square_size/2, uid->square_size/2, uid->square_size};
+			} else if(x == 9) {
+				game_state->board[x][y] = (Rectangle) {uid->square_size*y-uid->square_size/2, uid->square_size*x-uid->square_size/2, uid->square_size, uid->square_size/2};
 			} else if(y == 0) {
-				game_state->board[x][y] = (Rectangle) {uid->square_size*x-uid->square_size/2, uid->square_size*y, uid->square_size, uid->square_size/2};
+				game_state->board[x][y] = (Rectangle) {uid->square_size*y, uid->square_size*x-uid->square_size/2, uid->square_size/2, uid->square_size};
+			} else if(x == 0) {
+				game_state->board[x][y] = (Rectangle) {uid->square_size*y-uid->square_size/2, uid->square_size*x, uid->square_size, uid->square_size/2};
 			} else {
-				game_state->board[x][y] = (Rectangle) {uid->square_size*x-uid->square_size/2, uid->square_size*y-uid->square_size/2, uid->square_size, uid->square_size};
+				game_state->board[x][y] = (Rectangle) {uid->square_size*y-uid->square_size/2, uid->square_size*x-uid->square_size/2, uid->square_size, uid->square_size};
 			}
 			if(black) {
 				DrawRectangleRec(game_state->board[x][y], BLACK);
@@ -43,36 +43,36 @@ void DrawBoard(GameState *game_state, UserInterfaceData *uid)
 	for(int i = 0; i < 10; ++i) {
 		switch(i) {
 			case 1:
-				DrawTextCenterRect("1", game_state->board[0][i], SKYBLUE);
-				DrawTextCenterRect("1", game_state->board[9][i], SKYBLUE);
+				DrawTextCenterRect("1", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("1", game_state->board[i][9], SKYBLUE);
 				break;
 			case 2:
-				DrawTextCenterRect("2", game_state->board[0][i], SKYBLUE);
-				DrawTextCenterRect("2", game_state->board[9][i], SKYBLUE);
+				DrawTextCenterRect("2", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("2", game_state->board[i][9], SKYBLUE);
 				break;
 			case 3:
-				DrawTextCenterRect("3", game_state->board[0][i], SKYBLUE);
-				DrawTextCenterRect("3", game_state->board[9][i], SKYBLUE);
+				DrawTextCenterRect("3", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("3", game_state->board[i][9], SKYBLUE);
 				break;
 			case 4:
-				DrawTextCenterRect("4", game_state->board[0][i], SKYBLUE);
-				DrawTextCenterRect("4", game_state->board[9][i], SKYBLUE);
+				DrawTextCenterRect("4", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("4", game_state->board[i][9], SKYBLUE);
 				break;
 			case 5:
-				DrawTextCenterRect("5", game_state->board[0][i], SKYBLUE);
-				DrawTextCenterRect("5", game_state->board[9][i], SKYBLUE);
+				DrawTextCenterRect("5", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("5", game_state->board[i][9], SKYBLUE);
 				break;
 			case 6:
-				DrawTextCenterRect("6", game_state->board[0][i], SKYBLUE);
-				DrawTextCenterRect("6", game_state->board[9][i], SKYBLUE);
+				DrawTextCenterRect("6", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("6", game_state->board[i][9], SKYBLUE);
 				break;
 			case 7:
-				DrawTextCenterRect("7", game_state->board[0][i], SKYBLUE);
-				DrawTextCenterRect("7", game_state->board[9][i], SKYBLUE);
+				DrawTextCenterRect("7", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("7", game_state->board[i][9], SKYBLUE);
 				break;
 			case 8:
-				DrawTextCenterRect("8", game_state->board[0][i], SKYBLUE);
-				DrawTextCenterRect("8", game_state->board[9][i], SKYBLUE);
+				DrawTextCenterRect("8", game_state->board[i][0], SKYBLUE);
+				DrawTextCenterRect("8", game_state->board[i][9], SKYBLUE);
 				break;
 		}
 	}
@@ -81,36 +81,36 @@ void DrawBoard(GameState *game_state, UserInterfaceData *uid)
 	for(int i = 0; i < 10; ++i) {
 		switch(i) {
 			case 1:
-				DrawTextCenterRect("A", game_state->board[i][0], SKYBLUE);
-				DrawTextCenterRect("A", game_state->board[i][9], SKYBLUE);
+				DrawTextCenterRect("A", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("A", game_state->board[9][i], SKYBLUE);
 				break;
 			case 2:
-				DrawTextCenterRect("B", game_state->board[i][0], SKYBLUE);
-				DrawTextCenterRect("B", game_state->board[i][9], SKYBLUE);
+				DrawTextCenterRect("B", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("B", game_state->board[9][i], SKYBLUE);
 				break;
 			case 3:
-				DrawTextCenterRect("C", game_state->board[i][0], SKYBLUE);
-				DrawTextCenterRect("C", game_state->board[i][9], SKYBLUE);
+				DrawTextCenterRect("C", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("C", game_state->board[9][i], SKYBLUE);
 				break;
 			case 4:
-				DrawTextCenterRect("D", game_state->board[i][0], SKYBLUE);
-				DrawTextCenterRect("D", game_state->board[i][9], SKYBLUE);
+				DrawTextCenterRect("D", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("D", game_state->board[9][i], SKYBLUE);
 				break;
 			case 5:
-				DrawTextCenterRect("E", game_state->board[i][0], SKYBLUE);
-				DrawTextCenterRect("E", game_state->board[i][9], SKYBLUE);
+				DrawTextCenterRect("E", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("E", game_state->board[9][i], SKYBLUE);
 				break;
 			case 6:
-				DrawTextCenterRect("F", game_state->board[i][0], SKYBLUE);
-				DrawTextCenterRect("F", game_state->board[i][9], SKYBLUE);
+				DrawTextCenterRect("F", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("F", game_state->board[9][i], SKYBLUE);
 				break;
 			case 7:
-				DrawTextCenterRect("G", game_state->board[i][0], SKYBLUE);
-				DrawTextCenterRect("G", game_state->board[i][9], SKYBLUE);
+				DrawTextCenterRect("G", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("G", game_state->board[9][i], SKYBLUE);
 				break;
 			case 8:
-				DrawTextCenterRect("H", game_state->board[i][0], SKYBLUE);
-				DrawTextCenterRect("H", game_state->board[i][9], SKYBLUE);
+				DrawTextCenterRect("H", game_state->board[0][i], SKYBLUE);
+				DrawTextCenterRect("H", game_state->board[9][i], SKYBLUE);
 				break;
 		}
 	}
