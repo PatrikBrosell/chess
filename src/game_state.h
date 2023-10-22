@@ -46,7 +46,6 @@ typedef struct Piece {
 	Rectangle position;
 	int rank;		// Letter
 	int file;		// Number
-	bool selected;
 	char name[4];
 } Piece;
 

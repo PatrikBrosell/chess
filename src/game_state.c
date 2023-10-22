@@ -9,10 +9,6 @@ void InitGame(GameState* game_state)
 {
 	game_state->pieces = calloc(32, sizeof(Piece));
 
-	for(int i = 0; i < 32; ++i) {
-		game_state->pieces[i].selected = false;
-	}
-
 	game_state->pieces[0].type = ROOK;
 	strcpy(game_state->pieces[0].name, "R");
 	game_state->pieces[0].file = FILE_A;

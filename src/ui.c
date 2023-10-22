@@ -162,7 +162,7 @@ void DrawPieces(GameState *game_state, UserInterfaceData *uid)
 	Piece p;
 	for(int i = 0; i < 32; ++i) {
 		p = game_state->pieces[i];
-		if (p.selected) {
+		if (&p == uid->selected_piece) {
 			continue; // draw this piece last (on top)
 		}
 		DrawPiece(&p, uid->square_size);
@@ -170,7 +170,7 @@ void DrawPieces(GameState *game_state, UserInterfaceData *uid)
 
 	for(int i = 0; i < 32; ++i) {
 		p = game_state->pieces[i];
-		if(p.selected) {
+		if (&p == uid->selected_piece) {
 			DrawPiece(&p, uid->square_size);
 		}
 	}
