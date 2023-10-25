@@ -1,10 +1,8 @@
 #ifndef GAME_STATE_H
 #define GAME_STATE_H
 
-#include <raylib.h>
-
 typedef enum CHESS_FILE {
-	FILE_A = 1,
+	FILE_A = 0,
 	FILE_B,
 	FILE_C,
 	FILE_D,
@@ -15,7 +13,7 @@ typedef enum CHESS_FILE {
 } CHESS_FILE;
 
 typedef enum CHESS_RANK {
-	RANK_1 = 1,
+	RANK_1 = 0,
 	RANK_2,
 	RANK_3,
 	RANK_4,
@@ -35,23 +33,15 @@ typedef enum PIECE_TYPE {
 	PAWN,
 } PIECE_TYPE;
 
-typedef enum PIECE_COLOR {
-	PIECE_BLACK,
-	PIECE_WHITE,
-} PIECE_COLOR;
-
 typedef struct Piece {
 	PIECE_TYPE type;
-	PIECE_COLOR color;
-	Rectangle position;
+	bool is_black;
 	int rank;		// Letter
 	int file;		// Number
-	char name[4];
 } Piece;
 
 typedef struct {
 	Piece* pieces;
-	Rectangle board[10][10];
 } GameState;
 
 void InitGame(GameState*);

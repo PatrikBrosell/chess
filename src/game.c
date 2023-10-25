@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <raylib.h>
 
 #include "game_state.h"
@@ -71,11 +72,16 @@ void MainLoop(main_loop_args_t* args)
 	uid->square_size = win_size / 9;
 
 	if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-		for(int i = 0; i < 32; ++i) {
-			Vector2 mouse_pos = GetMousePosition();
-			Piece p = game_state->pieces[i];
-			if(CheckCollisionPointRec(mouse_pos, p.position)) {
-				uid->selected_piece = &game_state->pieces[i];
+		for(int i = 0; i < 8; ++i) {
+			for(int j = 0; j < 8; ++j) {
+				Vector2 mouse_pos = GetMousePosition();
+				Rectangle r = uid->board.board[i][j];
+
+				if(CheckCollisionPointRec(mouse_pos, r)) {
+					if(uid->squares[i][j].piece != NULL) {
+						uid->selected_piece = uid->squares[i][j].piece;
+					}
+				}
 			}
 		}
 	}
@@ -88,11 +94,11 @@ void MainLoop(main_loop_args_t* args)
 		}
 	} else {
 		Vector2 mp = GetMousePosition();
-		for(int rank = 0; rank < 10; ++rank) {
-			for(int file = 0; file < 10; ++file) {
-				if(CheckCollisionPointRec(mp, game_state->board[rank][file])) {
+		for(int rank = 0; rank < 8; ++rank) {
+			for(int file = 0; file < 8; ++file) {
+				if(CheckCollisionPointRec(mp, uid->board.board[rank][file])) {
 					for(int k = 0; k < 32; ++k) {
-						if(&game_state->pieces[k] == uid->selected_piece) {
+						if(&uid->pieces[k] == uid->selected_piece) {
 							uid->selected_piece = NULL;
 							MovePiece(rank, file, &game_state->pieces[k]);
 						}
@@ -103,15 +109,43 @@ void MainLoop(main_loop_args_t* args)
 	}
 
 	for(int i = 0; i < 32; ++i) {
-		int file = game_state->pieces[i].file;
-		int rank = game_state->pieces[i].rank;
-		if(&game_state->pieces[i] != uid->selected_piece) {
-			game_state->pieces[i].position = game_state->board[rank][file];
+		int file;
+		int rank;
+		bool is_black;
+		rank = game_state->pieces[i].rank;
+		file = game_state->pieces[i].file;
+		is_black = game_state->pieces[i].is_black;
+		switch(game_state->pieces[i].type) {
+			case KING:
+				strcpy(uid->pieces[i].name, "Kng");
+				break;
+			case QUEEN:
+				strcpy(uid->pieces[i].name, "Qu");
+				break;
+			case ROOK:
+				strcpy(uid->pieces[i].name, "R");
+				break;
+			case BISHOP:
+				strcpy(uid->pieces[i].name, "B");
+				break;
+			case KNIGHT:
+				strcpy(uid->pieces[i].name, "K");
+				break;
+			case PAWN:
+				strcpy(uid->pieces[i].name, "P");
+				break;
+			case EMPTY:
+				strcpy(uid->pieces[i].name, "ERR");
+				break;
+		}
+		if(&uid->pieces[i] != uid->selected_piece) {
+			uid->squares[rank][file].piece = &uid->pieces[i];
+			uid->pieces[i].position = uid->board.board[rank][file];
+			uid->pieces[i].is_black = is_black;
 		}
 	}
 
-
 	BeginDrawing();
-	DrawGame(game_state, uid);
+	DrawGame(uid);
 	EndDrawing();
 }
